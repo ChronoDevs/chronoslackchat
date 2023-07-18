@@ -6,10 +6,13 @@ use DB;
 use Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Broadcasting\PendingBroadcast;
 
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Person;
+
+use App\Events\UserOnlineSent;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\Auth\LoginRequest;
@@ -18,6 +21,9 @@ use App\Http\Requests\Auth\RegistrationRequest;
 class AuthService
 {
     const USERTOKEN = 'userToken';
+    const USERONLINE = 1;
+    const USEROFFLINE = 0;
+
     /**
      * Creates account for a user
      *
@@ -61,14 +67,16 @@ class AuthService
             return [
                 'success' => true,
                 'data' => $user->load(['person','role']),
-                'status' => 200
+                'status' => 200,
+                'message' => 'Successfully created account, Login to verify account created'
             ];
         } catch (\Exception $e) {
             \Log::error(get_class().' create() :'.$e);
             DB::rollback();
             return [
                 'success' => false,
-                'status' => $e->getStatusCode()
+                'status' => $e->getStatusCode(),
+                'message' => config('message.error')
             ];
         }        
     }
@@ -93,7 +101,8 @@ class AuthService
             if (is_null($person)) {
                 return [
                     'success' => false,
-                    'status' => 400
+                    'status' => 400,
+                    'message' => config('message.error')
                 ];
             }
 
@@ -119,14 +128,16 @@ class AuthService
             return [
                 'success' => true,
                 'data' => $updatedUser->load(['person','role']),
-                'status' => 200
+                'status' => 200,
+                'message' => 'Updated!'
             ];
         } catch (\Exception $e) {
             \Log::error(get_class(). ' update: '.$e);
             DB::rollback();
             return [
                 'success' => false,
-                'status' => $e->getStatusCode()
+                'status' => $e->getStatusCode(),
+                'message' => config('message.error')
             ];
         }
     }
@@ -155,7 +166,8 @@ class AuthService
             return [
                 'success' => false,
                 'data' => null,
-                'status' => $e->getStatusCode()
+                'status' => $e->getStatusCode(),
+                'message' => config('message.error')
             ];
         }
     }
@@ -175,6 +187,7 @@ class AuthService
             return [
                 'success' => true,
                 'data' => $validLoginRequest['user'],
+                'message' => $validLoginRequest['message'],
                 'status' => 200
             ];
         }
@@ -182,6 +195,7 @@ class AuthService
         return [
             'success' => false,
             'data' => null,
+            'message' => $validLoginRequest['message'],
             'status' => 400
         ];
     }
@@ -198,14 +212,16 @@ class AuthService
         $params = $request->validated();
 
         $user = User::where('email', $params['email'])->first();
-        $data = $user->load(['person', 'role']);
-        $data->token = $user->createToken(self::USERTOKEN);
 
         if(!is_null($user)) {
             if (Hash::check($params['password'], $user->password)) {
+                $user = self::setUserLoginStatus($user);
+                $data = $user->load(['person', 'role']);
+                $data->token = $user->createToken(self::USERTOKEN);
                 return [
                     'success' => true,
-                    'user' => $data
+                    'user' => $data,
+                    'message' => 'Valid Credentials'
                 ];
             } else {
                 return [
@@ -230,9 +246,13 @@ class AuthService
      */
     public static function loginWithToken() 
     {
+        if (Auth::check()) {
+            self::setUserLoginStatus(Auth::user());
+        }
+
         return [
             'success' => Auth::check(),
-            'data' => Auth::user()->load(['person', 'role']),
+            'data' => Auth::user()->refresh()->load(['person', 'role']),
             'status' => Auth::check() ? 200 : 400,
         ];
     }
@@ -246,6 +266,7 @@ class AuthService
      */
     public static function logout(Request $request) 
     {
+        self::setUserLoginStatus($request->user(), self::USEROFFLINE);
         $request->user()->currentAccessToken()->delete();
         
         return [
@@ -253,5 +274,39 @@ class AuthService
             'data' => null,
             'status' => 200,
         ];
+    }
+
+    /**
+     * Sets user status to online/offline
+     *
+     * @param User $user
+     * @param int $userStatus
+     *
+     * @return User
+     */
+    private static function setUserLoginStatus(User $user, int $userStatus = self::USERONLINE)
+    {
+        $userId = $user->id;
+
+        $user->update([
+            'isOnline' => $userStatus
+        ]);
+
+        $user = User::where('id', $userId)->first();
+        self::sendNotificationToOther($user);
+
+        return $user;
+    }
+
+    /**
+     * Sending notification to other users
+     *
+     * @param User $user
+     */
+    private static function sendNotificationToOther(User $user)
+    {
+        $userId = $user->id;
+
+        broadcast(new UserOnlineSent($user))->toOthers();
     }
 }

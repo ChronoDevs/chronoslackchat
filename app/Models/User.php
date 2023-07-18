@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Notifications\OnlineUserSentNotification;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
@@ -95,5 +97,16 @@ class User extends Authenticatable
     public function role()
     {
         return $this->hasOne('App\Models\Role', 'id', 'role_id');
+    }
+
+    // =================================
+    // Methods
+    // =================================
+    /**
+     * 
+     */
+    public function sendOnlineUserNotification(array $data) : void
+    {
+        $this->notify(new OnlineUserSentNotification($data));
     }
 }

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -78,7 +79,7 @@ class AuthController extends Controller
             return $this->success($result['data'], $result['status'], config('message.success'));
         }
 
-        return $this->error($result['status'], config('message.error'));
+        return $this->error($result['status'], $result['message']);
     }
 
     /**
