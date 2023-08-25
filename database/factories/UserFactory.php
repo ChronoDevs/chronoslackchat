@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\Person;
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -11,6 +14,13 @@ use Illuminate\Support\Str;
 class UserFactory extends Factory
 {
     /**
+     * The name of the factory's corresponding model.
+     *
+     * @var class-string<\Illuminate\Database\Eloquent\Model>
+     */
+    protected $model = User::class;
+    
+    /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
@@ -18,12 +28,50 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'remember_token' => Str::random(10),
+            //
         ];
+    }
+
+    /**
+     * Create a user factory for admins
+     */
+    public function admins(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'person_id' => Person::factory(),
+                'role_id' => config('const.user_role.admin'),
+                'username' => 'admin',
+                'email' => 'admin@chronostep.com',
+                'password' => 'test1234'
+            ];
+        })->afterCreating(function (User $user) {
+            $user->update([
+                'username' => 'admin' . $user->id,
+                'email' => 'admin' . $user->id . '@chronostep.com'
+            ]);
+        });
+    }
+
+    /**
+     * Create a user factory for members
+     */
+    public function members(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'person_id' => Person::factory(),
+                'role_id' => config('const.user_role.member'),
+                'username' => 'member',
+                'email' => 'member@chronostep.com',
+                'password' => 'test1234'
+            ];
+        })->afterCreating(function (User $user) {
+            $user->update([
+                'username' => 'member' . $user->id,
+                'email' => 'member' . $user->id . '@chronostep.com'
+            ]);
+        });
     }
 
     /**

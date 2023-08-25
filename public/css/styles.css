@@ -1,0 +1,91 @@
+html, body, main {
+    height: 100vh;
+}
+
+/* Login Page Styles */
+.login-form {
+    width: 500px;
+}
+
+.btn-login.btn {
+    width: 250px;
+    height: 48px;
+    background-color: #184497;
+    border-radius: 20px;
+    
+}
+
+.input-radius.form-control.form-control-lg{
+    border-radius: 100px;
+    text-align: center;
+}
+
+.col.m-auto {
+    padding: 0 50px;
+}
+
+.chrono-slack-logo {
+    width: 200px;
+}
+
+.input-container {
+    position: relative;
+}
+
+.password-toggle-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translate(0, -50%);
+    cursor: pointer;
+}
+
+.text-color {
+    color: #2069B1;
+}
+
+#sessionError, #usernameHelpBlock, #passwordHelpBlock {
+    color: #D2042D;
+}
+
+#container-channel-index {
+    height: calc(100vh - 56px);
+}
+
+.side-accordion {
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.accordion-item {
+    height: calc(100vh - 358px);
+}
+
+.channels-accordion, .direct-messages-accordion {
+    flex: 1;
+}
+
+.show-collapse-accordion {
+    height: calc(100% - 52px);
+}
+
+.channel-avatar {
+    height: 28px;
+    width: 28px;
+    border-radius: 5px;
+}
+
+.rounded-square {
+    height: 56px;
+    width: 56px;
+    border-radius: 5px;
+}
+
+#accordion-channel-list, #accordion-direct-message-list {
+    height: calc(100% - 52px);
+    overflow-y: auto;
+}
+
+.h-inherit {
+    height: inherit !important;
+}

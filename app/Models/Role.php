@@ -53,4 +53,16 @@ class Role extends Model
         'created_at',
         'updated_at'
     ];
+
+    // =================================
+    // Methods
+    // =================================
+    
+    /**
+     * Returns the list of roles
+     */
+    public static function list()
+    {
+        return self::get();
+    }
 }
