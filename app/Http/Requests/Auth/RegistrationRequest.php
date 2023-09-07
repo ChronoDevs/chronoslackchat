@@ -31,7 +31,7 @@ class RegistrationRequest extends FormRequest
             'username' => 'required',
             'email' => 'required|email',
             'password' => 'required|min:8|confirmed',
-            'phone' => ['required', 'regex:/^09\d{9}$/'],
+            'phone' => ['nullable', 'regex:/^09\d{9}$/'],
         ];
     }
 }

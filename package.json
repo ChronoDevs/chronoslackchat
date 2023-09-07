@@ -3,11 +3,22 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
+        "dev-ip": "vite --host=192.168.0.154",
         "build": "vite build"
     },
     "devDependencies": {
+        "@popperjs/core": "^2.11.6",
+        "@vitejs/plugin-vue": "^4.0.0",
         "axios": "^1.1.2",
+        "bootstrap": "^5.2.3",
+        "laravel-echo": "^1.15.2",
         "laravel-vite-plugin": "^0.7.5",
-        "vite": "^4.0.0"
+        "pusher-js": "^8.3.0",
+        "sass": "^1.56.1",
+        "vite": "^4.0.0",
+        "vue": "^3.2.37"
+    },
+    "dependencies": {
+        "@vueup/vue-quill": "^1.2.0"
     }
 }
