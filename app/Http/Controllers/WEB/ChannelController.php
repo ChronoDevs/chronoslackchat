@@ -53,7 +53,7 @@ class ChannelController extends Controller
         $channelMembers = ChannelMember::list();
         $users = User::list();
 
-        return view('pages.channels.show', compact(
+        return view('pages.channels.index', compact(
             'channel', 
             'channels', 
             'channelMembers', 

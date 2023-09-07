@@ -50,6 +50,22 @@ class MessageController extends Controller
     {
         // Group messages to show by dates
         $messages = Message::where('channel_id', $channel->id)->get();
+
+        // Base on created_at field
+        /**
+         * Using Group by group the messages by created_at
+         * message output should look like this.
+         * 
+         * $messages = [
+         *  '2023-08-24' => [
+         *      ...{data of '2023-08-24'}
+         *  ]
+         *  '2023-08-25' => [
+         *      ...{data of '2023-08-25'}
+         *  ]...
+         * ]
+         */
+
         
 
         // $messages = Message::where('channel_id', $channel->id)->limit(50)->get();

@@ -29,7 +29,6 @@
 </head>
 <body>
     <main id="app">
-        @yield('navbar')
         @yield('content')
     </main>
 

@@ -42,6 +42,10 @@ Route::group(['as' => 'web.auth.'], function () {
 Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['as' => 'web.'], function () {
+        // Users
+        Route::resource('/users', AuthController::class)->middleware('is_admin');
+        Route::get('/profile/{user}', [AuthController::class, 'editProfile'])->name('profile.edit');
+
         // Channels
         Route::resource('/channels', ChannelController::class);
         Route::post('add/{user}/to/{channel}', [ChannelController::class, 'addMember'])->name('add.member');
@@ -56,9 +60,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/messages/{channel}', [MessageController::class, 'sendMessage'])->name('send.message');
 
     });
-
-    // Add User
-    Route::resource('/users', AuthController::class)->middleware('is_admin');
     
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

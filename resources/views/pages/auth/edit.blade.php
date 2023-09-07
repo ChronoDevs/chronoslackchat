@@ -1,11 +1,11 @@
-@extends('layout.app')
-@extends('layout.navbar')
+@extends('layouts.app')
+@extends('layouts.navbar')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-evenly">
         <h2 class="text-center mt-4">Update a user</h2>
-        <form action="{{ route('users.update', $user) }}" method="POST">
+        <form action="{{ route('web.users.update', $user) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="row justify-content-evenly">
@@ -95,7 +95,7 @@
             </div>
             <div class="container text-center">
                 <button type="submit" class="btn btn-primary me-1">Update</button>
-                <a class="btn btn-danger ms-1" role="button" href="{{ route('users.create') }}">Cancel</a>
+                <a class="btn btn-danger ms-1" role="button" href="{{ route('web.users.create') }}">Cancel</a>
             </div>
         </form>
     </div>

@@ -1,5 +1,5 @@
-@extends('layout.app')
-@extends('layout.navbar')
+@extends('layouts.app')
+@extends('layouts.navbar')
 
 @section('content')
 <div class="container">
@@ -34,8 +34,8 @@
                         <td>{{ $user->email }}</td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <a class="btn btn-sm btn-primary me-1" href="{{ route('users.edit', $user) }}" role="button"><i class="bi bi-pencil"></i></a>
-                                <form class="ms-1" action="{{ route('users.destroy', $user) }}" method="POST">
+                                <a class="btn btn-sm btn-primary me-1" href="{{ route('web.users.edit', $user) }}" role="button"><i class="bi bi-pencil"></i></a>
+                                <form class="ms-1" action="{{ route('web.users.destroy', $user) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete {{ $user->email }}?')"><i class="bi bi-trash"></i></button>
@@ -50,7 +50,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-center">{{ $users->links() }}</div>
-        <form action="{{ route('users.store') }}" method="POST">
+        <form action="{{ route('web.users.store') }}" method="POST">
             @csrf
             <div class="row justify-content-evenly">
                 <div class="col-6">

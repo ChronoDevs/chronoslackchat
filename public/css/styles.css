@@ -48,6 +48,83 @@ html, body, main {
     color: #D2042D;
 }
 
+/* Dashboard Styles */
+.new-chat-button.btn {
+    background-color: #D9D9D9;
+    border: 0;
+    color: black;
+}
+
+.dashboard-channels, .dashboard-direct-messages {
+    max-width: 264px;
+}
+
+.channel-item, .direct-message-item {
+    font-size: 12px;
+}
+
+.overflow-channel, .overflow-direct-message {
+    max-height: 281px;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.extend-overflow-maxheight {
+    max-height: 635px;
+}
+
+.custom-truncate {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+}
+
+/* Navbar Styles */
+.user-dropdown {
+    font-size: 12px;
+}
+
+.user-avatar {
+    border: 1px solid #1A4A9B;
+}
+
+/* Show Chat Styles */
+.chat-container {
+    height: calc(100vh - 58px);
+}
+
+.chat-header {
+    background-color: #2DA3DD;
+}
+
+.chat-body {
+    background-color: #D9D9D9;
+}
+
+/* Quill Editor Custom Styles */
+.custom-toolbar.ql-toolbar.ql-snow {
+    padding: 0;
+}
+
+.quill-container .ql-container.ql-snow {
+    border: 0;
+}
+.quill-container .ql-container.ql-snow .ql-editor p{
+    color: #CACACA;
+}
+
+.quill-container .ql-container.ql-snow .ql-editor.ql-blank{
+    caret-color: white;
+}
+
+.quill-container .ql-container.ql-snow .ql-editor.ql-blank::before{
+    color: white;
+}
+
+/* Channels Page Index Styles */
 #container-channel-index {
     height: calc(100vh - 56px);
 }
@@ -89,3 +166,37 @@ html, body, main {
 .h-inherit {
     height: inherit !important;
 }
+
+
+/* .input-group-custom {
+    height: 93px;
+    position: relative;
+}
+
+.ql-toolbar {
+    position: absolute;
+    width: 100%;
+    left: 0;
+}
+
+.quill-custom {
+    flex: 1;
+    height: 50px !important;
+    position: absolute !important;
+    bottom: 0;
+    width: 100%;
+}
+
+.btn-send-custom {
+    position: absolute !important;
+    right: 0;
+    bottom: 0;
+    height: 50px !important;
+    border-radius: 0 !important;
+} */
+
+    
+/* .ql-container-test .ql-color .ql-container .ql-editor {
+    max-height: 140px !important;
+    max-width: 1514px !important;
+} */

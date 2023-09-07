@@ -91,6 +91,14 @@ class AuthController extends Controller
     }
 
     /**
+     * Edit the profile of the authenticated user
+     */
+    public function editProfile(Request $request, User $user)
+    {
+        return view('pages.profile.edit', compact('user'));
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(User $user)
